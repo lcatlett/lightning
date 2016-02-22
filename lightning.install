@@ -8,6 +8,7 @@
 
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Config\InstallStorage;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\user\Entity\User;
 use Drupal\user\RoleInterface;
@@ -510,5 +511,15 @@ function lightning_update_8001() {
   if (empty($field)) {
     $values = lightning_read_config('field.field.block_content.basic.body');
     FieldConfig::create($values)->save();
+
+    EntityViewDisplay::load('block_content.basic.default')
+      ->setComponent('body', [
+        'type' => 'text_default',
+        'weight' => 0,
+        'label' => 'hidden',
+        'settings' => [],
+        'third_party_settings' => [],
+      ])
+      ->save();
   }
 }
