@@ -68,14 +68,6 @@ function lightning_install() {
       'link' => ['uri' => 'internal:/admin/content/media'],
     ]
   )->save();
-  Shortcut::create(
-    [
-      'shortcut_set' => 'default',
-      'title' => t('Create landing page'),
-      'weight' => 3,
-      'link' => ['uri' => 'internal:/admin/structure/landing-page'],
-    ]
-  )->save();
 
   // Set the default and admin theme
   \Drupal::configFactory()
@@ -504,7 +496,8 @@ function lightning_read_config($id, $module = 'lightning') {
 }
 
 /**
- * Installs the body field on the basic block_content type.
+ * Installs the body field on the basic block_content type and deletes the
+ * Create landing page shortcut.
  */
 function lightning_update_8001() {
   $field = FieldConfig::load('block_content.basic.body');
@@ -522,4 +515,12 @@ function lightning_update_8001() {
       ])
       ->save();
   }
+
+  // Deletes the `Create Landing Page` toolbar shortcut.
+  $properties = ['link__uri' => 'internal:/admin/structure/landing-page'];
+  $shortcuts = \Drupal::entityTypeManager()->getStorage('shortcut')->loadByProperties($properties);
+  foreach ($shortcuts as $shortcut) {
+    $shortcut->delete();
+  }
 }
+
