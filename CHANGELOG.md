@@ -1,3 +1,20 @@
+## Beta 3
+* Panelizer is now included with Lightning as a dependency of the Layout component.
+* The Layout component now includes a new content type called Landing Page -- a
+  simple node type whose layout is controlled out-of-the-box by Panelizer.
+* Fixed a bug where the Body field was not present on the Basic custom block type.
+* Patched Panels and Workbench Moderation to make them play nice together. At this
+  time, it is possible to use the Panels in-place editor ONLY on the latest revision
+  of panelized content. (Put another way -- if Quick Edit does not show up, neither
+  will Panels IPE.) We're hoping this restriction will be temporary, but that depends
+  on changes in Panels and Workbench Moderation that are out of Lightning's control.
+* Updated several modules to their latest tagged versions.
+* The Media component has been split into several smaller features -- one each for
+  image, Twitter, video, and Instagram support. All depend on the main Lightning
+  Media module and are enabled by default.
+* All Lightning components are now packaged using Features, and Features is included
+  and enabled in Lightning by default. Features UI is included, but not installed.
+
 ## Beta 2
 * Introduced the Lightning Workflow module, which provides tools for workflow control
   based on Workbench Moderation and Scheduled Updates. You can transition content
