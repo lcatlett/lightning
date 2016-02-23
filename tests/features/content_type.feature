@@ -6,6 +6,7 @@
     Given I am logged in as a user with the "administrator" role
     When I visit "/admin/structure/types"
     Then I should see "Basic page"
+    And I should see "Landing Page"
 
   @javascript
   Scenario: Ensure that the WYSIWYG editor is present.
@@ -18,3 +19,8 @@
     When I visit "node/add/page"
     Then I should see a "input[name='field_meta_tags[0][basic][title]']" element
     And I should see a "input[name='field_meta_tags[0][basic][description]']" element
+
+  Scenario: The basic block content type should have a body field.
+    Given I am logged in as a user with the "administrator" role
+    When I visit "/block/add"
+    Then I should see a "Body" element

@@ -1,9 +1,13 @@
-@lightning @layout
+@lightning @layout @api
 Feature: Panelizer
 
-  @api
-  Scenario: Opting in to panelization for content
-    Given I am logged in as a user with the "administer node display" permission
-    When I visit "/admin/structure/types/manage/page/display"
-    Then the "panelizer[enable]" checkbox should be checked
-    And the "panelizer[custom]" checkbox should be checked
+  Scenario: Panelizer is enabled for landing pages
+    Given I am logged in as a user with the "administer nodes,access panels in-place editing,administer panelizer node landing_page content" permissions
+    And landing_page content:
+      | title  | path    |
+      | Foobar | /foobar |
+    When I visit "/foobar"
+    Then I should see a "#panels-ipe-content" element
+    And I should not see a ".field--name-uid" element
+    And I should not see a ".field--name-created" element
+    And I cleanup the "/foobar" alias

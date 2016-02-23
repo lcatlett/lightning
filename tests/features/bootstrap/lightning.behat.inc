@@ -6,6 +6,7 @@
  */
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Drupal\DrupalExtension\Context\DrupalSubContextBase;
 use Drupal\DrupalExtension\Context\DrupalSubContextInterface;
 
@@ -150,18 +151,6 @@ class LightningSubContext extends DrupalSubContextBase implements DrupalSubConte
   }
 
   /**
-   * Sleeps for a certain number of seconds.
-   *
-   * @When wait :seconds seconds
-   * @When wait :second second
-   * @When I wait :seconds seconds
-   * @When I wait :seconds second
-   */
-  public function waitSeconds($seconds) {
-    $this->getSession()->wait(1000 * $seconds);
-  }
-
-  /**
    * Asserts that an element, specified by CSS selector, exists.
    *
    * @Then the element :selector should exist
@@ -206,6 +195,87 @@ class LightningSubContext extends DrupalSubContextBase implements DrupalSubConte
     else {
       throw new \RuntimeException('Drupal is not bootstrapped.');
     }
+  }
+
+  /**
+   * Deletes the URL alias provided.
+   *
+   * @param string $path_alias
+   *   The alias to delete (this is the alias entered by the user or generated
+   *   by pathauto, not the system path)
+   *
+   * @Then I cleanup the :path_alias alias
+   */
+  public function cleanupTheAlias($path_alias) {
+    if ($this->getDriver()->isBootstrapped()) {
+      $system_path = \Drupal::service('path.alias_manager')->getPathByAlias($path_alias, null);
+      if ($system_path == $path_alias) {
+        throw new \RuntimeException('Path alias `' . $path_alias . '` not found.');
+      }
+      \Drupal::service('path.alias_storage')->delete(array('source' => $system_path));
+    }
+    else {
+      throw new \RuntimeException('Drupal is not bootstrapped.');
+    }
+  }
+
+  /**
+   * Clicks an arbitrary element, found by CSS selector.
+   *
+   * @param string $selector
+   *   The CSS selector.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   *   If the specified element is not present on the page.
+   *
+   * @When I click the :selector element
+   */
+  public function clickElementBySelector($selector) {
+    $session = $this->getSession();
+
+    $element = $session->getPage()->find('css', $selector);
+    if ($element) {
+      $element->click();
+    }
+    else {
+      throw new ElementNotFoundException($session, 'element', 'css', $selector);
+    }
+  }
+
+  /**
+   * Applies Panelizer to a node type.
+   *
+   * @param string $bundle
+   *   The node type ID.
+   *
+   * @Given I have applied Panelizer to the :bundle node type
+   * @Given I have panelized the :bundle node type
+   * @When I apply Panelizer to the :bundle node type
+   * @When I panelize the :bundle node type
+   */
+  public function panelize($bundle) {
+    $this->visitPath("admin/structure/types/manage/$bundle/display");
+    $this->minkContext->checkOption('panelizer[enable]');
+    $this->minkContext->checkOption('panelizer[custom]');
+    $this->minkContext->pressButton('Save');
+  }
+
+  /**
+   * Removes Panelizer from a node type.
+   *
+   * @param string $bundle
+   *   The node type ID.
+   *
+   * @Given I have removed Panelizer from the :bundle node type
+   * @Given I have unpanelized the :bundle node type
+   * @When I remove Panelizer from the :bundle node type
+   * @When I unpanelize the :bundle node type
+   */
+  public function unpanelize($bundle) {
+    $this->visitPath("admin/structure/types/manage/$bundle/display");
+    $this->minkContext->uncheckOption('panelizer[enable]');
+    $this->minkContext->uncheckOption('panelizer[custom]');
+    $this->minkContext->pressButton('Save');
   }
 
 }

@@ -50,26 +50,19 @@ projects:
     subdir: contrib/layout
   panels:
     type: module
-    version: 3.0-beta3
+    version: 3.0-beta4
     subdir: contrib/layout
     patch:
-      # IPE not saving context mapping (and trying to map contexts too early)
-      # This patch is in 3.0-beta4 and later.
-      2665332: https://www.drupal.org/files/issues/panels-ipe-context-blocks-2665332-5.patch
+      # Allow other modules to disable the IPE based on custom logic
+      2667754: https://www.drupal.org/files/issues/2667754-3.patch
   page_manager:
     type: module
-    version: 1.0-alpha22
+    version: 1.0-alpha23
     subdir: contrib/layout
   panelizer:
     type: module
-    version: 3.0-alpha1
+    version: 3.0-alpha2
     subdir: contrib/layout
-    patch:
-      # Contextual blocks not shown in the IPE
-      # This patch is in 3.0-alpha2 and later.
-      2665280: https://www.drupal.org/files/issues/panelizer-contextual-blocks-2665280-11.patch
-      # Notice: Undefined Index: label in Drupal\panelizer\Panelizer->getPermissions()
-      2665678: https://www.drupal.org/files/issues/2665678-2.patch
 
   # Preview. These modules will only be enabled if the associated Lightning
   # Preview module is enabled.
@@ -84,6 +77,11 @@ projects:
     type: module
     version: 1.0-beta1
     subdir: contrib/workflow
+    patch:
+      # Provide logical access control for when IPE should be applied to moderated nodes
+      2668006: https://www.drupal.org/files/issues/2668006-2.patch
+      # Anonymous able to see "View" and "Latest Version" tabs
+      2672122: https://www.drupal.org/files/issues/anonymous_able_to_see-2672122-11.patch
   # ---
   # Other Modules. These modules provide general expected functionality or
   # enhancements not directly related to Lightning Core Features.
@@ -104,11 +102,11 @@ projects:
     subdir: contrib
   inline_entity_form:
     type: module
-    version: 1.0-alpha3
+    version: 1.0-alpha4
     subdir: contrib
   metatag:
     type: module
-    version: 1.0-beta3
+    version: 1.0-beta4
     subdir: contrib
   search_api:
     type: module
