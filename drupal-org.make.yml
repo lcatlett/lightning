@@ -81,7 +81,7 @@ projects:
       # Provide logical access control for when IPE should be applied to moderated nodes
       2668006: https://www.drupal.org/files/issues/2668006-2.patch
       # Anonymous able to see "View" and "Latest Version" tabs
-      2672122: https://www.drupal.org/files/issues/anonymous_able_to_see-2672122-7.patch
+      2672122: https://www.drupal.org/files/issues/anonymous_able_to_see-2672122-11.patch
   # ---
   # Other Modules. These modules provide general expected functionality or
   # enhancements not directly related to Lightning Core Features.
