@@ -40,8 +40,8 @@ dependencies:
   - views_ui
   # contrib
   - metatag
+  - search_api_db
 
 themes:
   - bartik
   - seven
-
